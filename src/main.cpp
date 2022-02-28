@@ -34,7 +34,8 @@ int main(int argc, char** argv) {
     serverSocket.listen(argv[1]);
 
     while (true) {
-        serverSocket.accept();
+        int fd = serverSocket.accept();
+        TCPSocket conSocket(fd);
         cout << "client connected" << endl;
         string buffer;
         vector<string> files = scanDir(FILEDIR);
@@ -47,7 +48,7 @@ int main(int argc, char** argv) {
 
 
         // waiting for command
-        while (serverSocket.read(buffer)) {
+        while (conSocket.read(buffer)) {
             if (buffer == "upload") {
                 cout << "upload" << endl;
             } 

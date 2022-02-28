@@ -16,10 +16,15 @@ using std::ostream;
 using std::stringstream;
 
 TCPSocket::TCPSocket():
-    con_fd(-1), 
     con_addr() {
     fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd == -1) throw "can not create a TCP socket";
+}
+
+TCPSocket::TCPSocket(int fd): 
+    fd(fd),
+    con_addr() {
+        if (fd == -1) throw "can not create a TCP socket";
 }
 
 void TCPSocket::connect(string host, string port) {
@@ -45,24 +50,23 @@ void TCPSocket::listen(string port) {
     if (::listen(fd, 8)) throw runtime_error(strerror(errno));
 }
 
-void TCPSocket::accept() {
+int TCPSocket::accept() {
     socklen_t addrlen;
-    con_fd = ::accept(fd, &con_addr, &addrlen);
+    int con_fd = ::accept(fd, &con_addr, &addrlen);
     if (con_fd == -1) throw runtime_error(strerror(errno));
+    return con_fd;
 }
 
 ssize_t TCPSocket::read(string &buffer) {
-    if (con_fd == -1) throw runtime_error("this socket does not connect to another socket"); 
     ssize_t size;
     memset(buf, 0, sizeof(buf));
-    size = ::read(con_fd, buf, sizeof(buf));
+    size = ::read(fd, buf, sizeof(buf));
     buffer.assign(buf);
     return size;
 }
 
 ssize_t TCPSocket::write(const string buffer) {
-    if (con_fd == -1) throw runtime_error("this socket does not connect to another socket");
     ssize_t size;
-    size = ::write(con_fd, buffer.c_str(), sizeof(buffer.c_str()));
+    size = ::write(fd, buffer.c_str(), sizeof(buffer.c_str()));
     return size;
 }
