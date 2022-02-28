@@ -29,7 +29,7 @@ public:
 
     ssize_t read(string &buffer);
 
-    ssize_t write(string &buffer);
+    ssize_t write(const string buffer);
 };
 
 #endif

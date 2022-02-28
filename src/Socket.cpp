@@ -60,7 +60,7 @@ ssize_t TCPSocket::read(string &buffer) {
     return size;
 }
 
-ssize_t TCPSocket::write(string &buffer) {
+ssize_t TCPSocket::write(const string buffer) {
     if (con_fd == -1) throw runtime_error("this socket does not connect to another socket");
     ssize_t size;
     size = ::write(con_fd, buffer.c_str(), sizeof(buffer.c_str()));
