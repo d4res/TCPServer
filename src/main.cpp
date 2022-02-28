@@ -6,9 +6,12 @@
 #include <iostream>
 #include <sys/socket.h>
 #include <vector>
+#include <fstream>
+#include <iomanip>
 #include "Socket.h"
 #include "File.h"
 
+using std::fstream;
 using std::vector;
 using std::string;
 using  std::cout;
@@ -33,8 +36,13 @@ int main(int argc, char** argv) {
     // string buffer;
     // while (serverSocket.read(buffer) ) cout << buffer;
 
-    vector<string> v = scanDir("./files");
-
+    vector<string> files = scanDir("./files");
+    for (size_t i = 0; i < files.size(); ++i) {
+        string index = std::to_string(i) + ".";
+        cout << std::left;
+        cout << std::setw(3) << index ;
+        cout << files[i] << endl; 
+    }
     
     return 0;
 }
