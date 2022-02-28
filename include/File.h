@@ -10,4 +10,7 @@ using std::string;
 
 vector<string> scanDir(const string dir);
 
+const string FILEDIR = "files";
+
+
 #endif

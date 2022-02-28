@@ -34,12 +34,14 @@ void TCPSocket::connect(string host, string port) {
 }
 
 void TCPSocket::listen(string port) {
-    struct addrinfo hints, *p;
-    memset(&hints, 0, sizeof(addrinfo));
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_family =  AF_INET;
-    getaddrinfo(NULL, port.c_str(), &hints, &p);
-    if (bind(fd, p->ai_addr, p->ai_addrlen)) throw runtime_error(strerror(errno));
+
+    int _port = std::stoi(port);
+    sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(_port);
+    
+    if (bind(fd, (sockaddr *)&addr, sizeof(addr))) throw runtime_error(strerror(errno));
     if (::listen(fd, 8)) throw runtime_error(strerror(errno));
 }
 
@@ -55,5 +57,12 @@ ssize_t TCPSocket::read(string &buffer) {
     memset(buf, 0, sizeof(buf));
     size = ::read(con_fd, buf, sizeof(buf));
     buffer.assign(buf);
+    return size;
+}
+
+ssize_t TCPSocket::write(string &buffer) {
+    if (con_fd == -1) throw runtime_error("this socket does not connect to another socket");
+    ssize_t size;
+    size = ::write(con_fd, buffer.c_str(), sizeof(buffer.c_str()));
     return size;
 }

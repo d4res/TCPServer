@@ -15,6 +15,7 @@ using std::runtime_error;
 using std::cout;
 using std::endl;
 
+
 vector<string> scanDir( const string dir){
     vector<string> files;
 
@@ -26,7 +27,7 @@ vector<string> scanDir( const string dir){
 
     struct dirent *pdirent;
     string filename;
-    while (pdirent = readdir(pdir)) {
+    while ( (pdirent = readdir(pdir)) ) {
         filename.assign(pdirent->d_name);
         if (filename == "." || filename == "..") continue;
        files.push_back(filename);

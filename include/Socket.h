@@ -28,6 +28,8 @@ public:
     void accept();
 
     ssize_t read(string &buffer);
+
+    ssize_t write(string &buffer);
 };
 
 #endif
