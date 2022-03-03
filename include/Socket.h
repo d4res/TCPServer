@@ -7,6 +7,13 @@
 
 using std::string;
 
+
+const int READY = 0;
+const int DOWNLOAD = 1;
+const int UPLOAD = 2;
+const int DOWNLOAD_INDEX = 3;
+const int UPLOAD_INDEX = 4;
+
 class TCPSocket {
 private: 
     int fd; 

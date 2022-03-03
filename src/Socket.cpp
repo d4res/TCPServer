@@ -67,6 +67,7 @@ ssize_t TCPSocket::read(string &buffer) {
 
 ssize_t TCPSocket::write(const string buffer) {
     ssize_t size;
-    size = ::write(fd, buffer.c_str(), sizeof(buffer.c_str()));
+    size = ::write(fd, buffer.c_str(), buffer.size());
+    perror(NULL);
     return size;
 }
